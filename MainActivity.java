@@ -6,13 +6,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-   //Se implementa la interfaz BlankFragment.OnFragmentInteractionListener para pasar mensajes entre el Fragment y el MainActivity
+import android.widget.TextView;
+
+//Se implementa la interfaz BlankFragment.OnFragmentInteractionListener para pasar mensajes entre el Fragment y el MainActivity
 public class MainActivity extends AppCompatActivity implements  BlankFragment.OnFragmentInteractionListener{
 Button btn_fragmento;
+TextView tv_nombre;//Este TV será para mostrar el nombree cuiando el Fragment se lo pase
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        tv_nombre=findViewById(R.id.tv_nombre);
         btn_fragmento=findViewById(R.id.btn_fragmento);
         btn_fragmento.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,8 +44,9 @@ transaction.addToBackStack(null);
 transaction.commit();*/
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
 
-    }
-}
+       @Override
+       public void pasarDato(String nombre) {
+           tv_nombre.setText(nombre);
+       }
+   }

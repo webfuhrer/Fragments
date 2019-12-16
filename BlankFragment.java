@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 
 /**
@@ -26,7 +28,9 @@ public class BlankFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private EditText et_nombre;
+    private Button btn_fragment;
+    //Oyente para pasar mensajes al Main
     private OnFragmentInteractionListener mListener;
 
     public BlankFragment() {
@@ -54,6 +58,7 @@ public class BlankFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -63,16 +68,25 @@ public class BlankFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_blank, container, false);
+        // Como quiero acceder a objetos View del FGragment, no retorno directamente la vista.
+
+        View vista=inflater.inflate(R.layout.fragment_blank, container, false);
+        //Ojo porque aunque en R.id aparecen todos los objetos View, sólo puedo
+        //acceder a los que están en la vista mostrada
+        btn_fragment=vista.findViewById(R.id.btn_enviar);
+        et_nombre=vista.findViewById(R.id.et_nombre);
+        btn_fragment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String nombre=et_nombre.getText().toString();
+                mListener.pasarDato(nombre);
+            }
+        });
+        return vista;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+
 
     @Override
     public void onAttach(Context context) {
@@ -103,6 +117,6 @@ public class BlankFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void pasarDato(String nombre);
     }
 }
