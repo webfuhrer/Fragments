@@ -7,8 +7,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+
+import java.util.ArrayList;
 
 
 /**
@@ -20,15 +25,14 @@ import android.widget.EditText;
  * create an instance of this fragment.
  */
 public class BlankFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    //Lo pongo global para poder avisarle de que han cambiado los datos.
+    private ArrayAdapter<String> adapter;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+
+
     private EditText et_nombre;
+    private Spinner spn_tareas;
+    private ArrayList<String> lista_tareas;
     private Button btn_fragment;
     //Oyente para pasar mensajes al Main
     private OnFragmentInteractionListener mListener;
@@ -37,20 +41,11 @@ public class BlankFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BlankFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static BlankFragment newInstance(String param1, String param2) {
+
+    public static BlankFragment newInstance(ArrayList<String> lista_tareas) {
         BlankFragment fragment = new BlankFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putStringArrayList("valores", lista_tareas);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,8 +55,8 @@ public class BlankFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            lista_tareas = getArguments().getStringArrayList("valores");
+
         }
     }
 
@@ -73,15 +68,12 @@ public class BlankFragment extends Fragment {
         View vista=inflater.inflate(R.layout.fragment_blank, container, false);
         //Ojo porque aunque en R.id aparecen todos los objetos View, sólo puedo
         //acceder a los que están en la vista mostrada
-        btn_fragment=vista.findViewById(R.id.btn_enviar);
-        et_nombre=vista.findViewById(R.id.et_nombre);
-        btn_fragment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String nombre=et_nombre.getText().toString();
-                mListener.pasarDato(nombre);
-            }
-        });
+
+        spn_tareas=vista.findViewById(R.id.spn_tareas);
+       adapter = new ArrayAdapter<String>(
+                getContext(), android.R.layout.simple_spinner_item, lista_tareas);
+        spn_tareas.setAdapter(adapter);
+
         return vista;
     }
 
@@ -104,7 +96,11 @@ public class BlankFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
+    public void addTarea(String tarea)
+    {
+        lista_tareas.add(tarea);
+        adapter.notifyDataSetChanged();
+    }
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated

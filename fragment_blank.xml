@@ -8,20 +8,8 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <Button
-        android:id="@+id/btn_enviar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="60dp"
-        android:text="Enviar" />
-
-    <EditText
-        android:id="@+id/et_nombre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
-
+    <Spinner
+        android:id="@+id/spn_tareas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </FrameLayout>

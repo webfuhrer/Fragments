@@ -6,34 +6,39 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 //Se implementa la interfaz BlankFragment.OnFragmentInteractionListener para pasar mensajes entre el Fragment y el MainActivity
 public class MainActivity extends AppCompatActivity implements  BlankFragment.OnFragmentInteractionListener, BlankFragment2.OnFragmentInteractionListener{
-Button btn_fragmento, btn_fragment2;
-TextView tv_nombre;//Este TV será para mostrar el nombree cuiando el Fragment se lo pase
+Button btn_fragmento, btn_add_tarea;
+EditText et_tarea;
+BlankFragment b;//Lo hago global para poder acceder a él en el addTarea
+//TextView tv_nombre;//Este TV será para mostrar el nombree cuiando el Fragment se lo pase
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        tv_nombre=findViewById(R.id.tv_nombre);
+        btn_add_tarea=findViewById(R.id.btn_add);
         btn_fragmento=findViewById(R.id.btn_fragmento);
-        btn_fragment2=findViewById(R.id.btn_fragment2);
-        btn_fragment2.setOnClickListener(new View.OnClickListener() {
+        et_tarea=findViewById(R.id.et_tarea);
+        final ArrayList<String> tareas=new ArrayList();
+        tareas.add("Barrer");
+        tareas.add("Fregar");
+        btn_add_tarea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BlankFragment2 b=new BlankFragment2();
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.id_contenedor, b);
-                transaction.addToBackStack(null);
-                transaction.commit();
+                String tarea=et_tarea.getText().toString();
+                b.addTarea(tarea);
             }
         });
         btn_fragmento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Un objeto de tipo BlankFragment
-                BlankFragment b=new BlankFragment();
+                b=BlankFragment.newInstance(tareas);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.id_contenedor, b);
                 transaction.addToBackStack(null);
@@ -58,11 +63,11 @@ transaction.commit();*/
 
        @Override
        public void pasarDato(String nombre) {
-           tv_nombre.setText(nombre);
+           //tv_nombre.setText(nombre);
        }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-        
+
     }
 }
